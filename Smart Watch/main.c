@@ -467,3 +467,67 @@ const unsigned char cronoTe [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00
 };
+
+
+boolean isOn = false ;
+boolean isLog = false ;
+boolean isLock = false ;
+
+unsigned int centisecond = 0;
+unsigned int second = 0;
+boolean canCount = false ;
+
+int melody[] = {
+  N_D3, N_D3, N_D4, N_A3, 0, N_GS3, N_G3, N_F3, N_D3, N_F3, N_G3, N_C3, N_C3, N_D4, N_A3, 0, N_GS3, N_G3, N_F3, N_D3, N_F3, N_G3, N_B2, N_B2, N_D4, N_A3, 0, N_GS3, N_G3, N_F3, N_D3, N_F3, N_G3, N_AS2, N_AS2, N_D4, N_A3, 0, N_GS3, N_G3,
+};
+int noteDurations[] = {
+  16, 16, 8, 6, 32, 8, 8, 8, 16, 16, 16, 16, 16, 8, 6, 32, 8, 8, 8, 16, 16, 16, 16, 16, 8, 6, 32, 8, 8, 8, 16, 16, 16, 16, 16, 8, 6, 32, 8, 8,
+};
+
+char keys[4][4] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+byte rowPins[4] = {10, 9, 8, 7};
+byte colPins[4] = {6, 5, 4, 3};
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 4);
+
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
+
+const int trigPin = 12, echoPin = 11;
+
+DHT dht(23, DHT22);
+
+RTC_DS3231 rtc;
+
+TM1637 tm(27, 25);
+
+char password[] = "10203040";
+
+void setup() {
+  tm.init();
+  tm.set(2);
+  pinMode(12, OUTPUT);
+  dht.begin();
+  Serial.begin(9600);
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("SSD1306 allocation failed");
+    while (1);
+  }
+  if (!rtc.begin()) {
+    Serial.println("Couldn't find RTC. Dead now.");
+    while (1);
+  }
+  Timer1.initialize(10000);
+  Timer1.attachInterrupt(TimingISR);
+}
+
+void loop() {
+  // turnOn();
+  // login();
+  isOn = true ;
+  isLog = true ;
+  goMenu();
+}
