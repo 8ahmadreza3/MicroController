@@ -307,3 +307,28 @@ void showClock() {
     }
   }
 }
+
+
+void temAndHum() {
+  char key ;
+  while (1) {
+    float t = dht.readTemperature();
+    float h = dht.readHumidity();
+    display.clearDisplay();
+    display.drawBitmap(0, 0, tempHumTe, 128, 64, WHITE);
+    display.setCursor(57, 6);
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.print(t);
+    display.setCursor(74, 32);
+    display.print(h);
+    display.display();
+    for (int i = 0 ; i < 200 ; i++) {
+      key = keypad.getKey();
+      if (key == '#')
+        return;
+
+      delay(10);
+    }
+  }
+}
