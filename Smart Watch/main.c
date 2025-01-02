@@ -243,3 +243,33 @@ void chooseApp(char key, int i) {
     }
   }
 }
+void distanceApp() {
+  char key ;
+  while (1) {
+    long duration, distance;
+    display.clearDisplay();
+    display.drawBitmap(0, 0, distanceTe, 128, 64, WHITE);
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    delay(200);
+    distance = duration * 0.0343 / 2;
+    display.setTextSize(2);
+    display.setCursor(20, 20);
+    display.setTextColor(WHITE);
+    display.print(distance);
+    display.setCursor(15, 45);
+    display.print(distance / 100.0);
+    display.display();
+    for (int i = 0 ; i < 100 ; i++) {
+      key = keypad.getKey();
+      if (key == '#')
+        return;
+
+      delay(10);
+    }
+  }
+}
