@@ -243,6 +243,7 @@ void chooseApp(char key, int i) {
     }
   }
 }
+
 void distanceApp() {
   char key ;
   while (1) {
@@ -308,7 +309,6 @@ void showClock() {
   }
 }
 
-
 void temAndHum() {
   char key ;
   while (1) {
@@ -373,3 +373,15 @@ void cronometer() {
   }
 }
 
+void TimingISR() {
+  if (!canCount)
+    return ;
+  centisecond ++;
+  if (centisecond == 100) {
+    second ++;
+    if (second == 5999) {
+      second = 0;
+    }
+    centisecond = 0;
+  }
+}
