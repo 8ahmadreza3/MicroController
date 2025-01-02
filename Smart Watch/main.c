@@ -332,3 +332,44 @@ void temAndHum() {
     }
   }
 }
+
+void cronometer() {
+  char key ;
+  display.clearDisplay();
+  display.drawBitmap(0, 0, cronoTe, 128, 64, WHITE);
+  display.display();
+  tm.point(1);
+  tm.set(2);
+  while (1) {
+    if (second >= 100) {
+      tm.display(0, (second / 600) % 10);
+      tm.display(1, (second / 60) % 10);
+      tm.display(2, (second / 10) % 6);
+      tm.display(3, second % 10);
+    } else {
+      tm.display(0, second / 10);
+      tm.display(1, second % 10);
+      tm.display(2, (centisecond / 10) % 10);
+      tm.display(3, centisecond % 10);
+    }
+    key = keypad.getKey();
+    if (key == '#') {
+      canCount = false ;
+      centisecond = 0 ;
+      second = 0 ;
+      tm.set(-1);
+      return;
+    } else if (key == 'A') {
+      canCount = true ;
+    } else if (key == 'B') {
+      canCount = false ;
+      centisecond = 0 ;
+      second = 0 ;
+    } else if (key == 'C') {
+      canCount = false ;
+    } else if (key == 'D') {
+      canCount = true ;
+    }
+  }
+}
+
