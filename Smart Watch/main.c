@@ -125,7 +125,6 @@ void palyAnimation() {
   display.display();
 }
 
-
 void login() {
   if (!isOn || isLog)
     return ;
@@ -185,4 +184,62 @@ void checkPass() {
   }
   display.display();
   delay(1500);
+}
+
+void goMenu() {
+  if (!isOn || !isLog || isLock)
+    return ;
+  char key ;
+  int i = 0;
+  showMenu(i);
+  while (!isLock) {
+    while (1) {
+      key = keypad.getKey();
+      if (key)
+        break;
+    }
+    if (key == '0') {
+      i = (++i) % 2 ;
+    } else if (key == '#') {
+      i = (++i) % 2 ;
+    } else
+      chooseApp(key, i);
+
+    showMenu(i);
+    tm.set(-1);
+  }
+}
+
+void showMenu(int i) {
+  display.clearDisplay();
+  display.drawBitmap(0, 0, menu[i], 128, 64, WHITE);
+  display.display();
+}
+
+void chooseApp(char key, int i) {
+  if (key == 'A') {
+    if (i == 0) {
+      distanceApp() ;
+      // } else {
+      //   // calculator() ;
+    }
+  } else if (key == 'B') {
+    if (i == 0) {
+      temAndHum();
+      // } else {
+      //   // playGame();
+    }
+  } else if (key == 'C') {
+    if (i == 0) {
+      showClock();
+      //   } else {
+      //     gallery();
+    }
+  } else if (key == 'D') {
+    if (i == 0) {
+      cronometer();
+      //   } else {
+      //     lock();
+    }
+  }
 }
