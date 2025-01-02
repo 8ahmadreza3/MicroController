@@ -124,3 +124,65 @@ void palyAnimation() {
   }
   display.display();
 }
+
+
+void login() {
+  if (!isOn || isLog)
+    return ;
+  display.clearDisplay();
+  display.drawBitmap(0, 0, logo, 128, 64, WHITE);
+  display.display();
+  delay(500);
+
+  char key ;
+  while (1) {
+    key = keypad.getKey();
+    if (key)
+      break;
+  }
+
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setCursor(20, 5);
+  display.println("ENTER PASSWORD :");
+  display.drawRoundRect(14, 20, 100, 18, 8, WHITE);
+  display.display();
+  checkPass();
+}
+
+void checkPass() {
+  boolean samePass = true ;
+  display.setCursor(18, 25);
+  char key ;
+  for (int i = 0 ; i < 8 ; i++) {
+    while (1) {
+      key = keypad.getKey();
+      if (key)
+        break;
+    }
+    if (key == '#') {
+      samePass = false ;
+      break;
+    }
+    if (key != password[i])
+      samePass = false ;
+
+    display.print("* ");
+    display.display();
+  }
+  delay(500);
+
+  display.clearDisplay();
+  display.setCursor(20, 20);
+  if (samePass) {
+    isLog = true ;
+    display.println("Welcome Back !!");
+  } else {
+    display.println("Wrong Password!");
+    display.display();
+    delay(750);
+    display.println("\n   Try again later");
+  }
+  display.display();
+  delay(1500);
+}
