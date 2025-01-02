@@ -273,3 +273,37 @@ void distanceApp() {
     }
   }
 }
+
+void showClock() {
+  char key ;
+  DateTime now = rtc.now();
+  display.clearDisplay();
+  display.drawBitmap(0, 0, clockTe, 128, 64, WHITE);
+  display.setTextColor(WHITE);
+  display.setTextSize(2);
+  display.setCursor(80, 0);
+  display.print(now.year());
+  display.setCursor(90, 18);
+  display.print("/");
+  display.print(now.month());
+  display.setCursor(90, 35);
+  display.print("/");
+  display.print(now.day());
+  display.display();
+  tm.set(2);
+  tm.point(1);
+  while (1) {
+    DateTime now = rtc.now();
+    tm.display(0, (now.hour() / 10) % 10);
+    tm.display(1, now.hour() % 10);
+    tm.display(2, (now.minute() / 10) % 10);
+    tm.display(3, now.minute() % 10);
+    for (int i = 0 ; i < 600 ; i++) {
+      key = keypad.getKey();
+      if (key == '#') {
+        return;
+      }
+      delay(10);
+    }
+  }
+}
