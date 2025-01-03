@@ -232,8 +232,8 @@ void chooseApp(char key, int i) {
   } else if (key == 'C') {
     if (i == 0) {
       showClock();
-      //   } else {
-      //     gallery();
+    } else {
+      gallery();
     }
   } else if (key == 'D') {
     if (i == 0) {
@@ -492,5 +492,37 @@ char chooseOperator(char op) {
     return '+';
   } else {
     return '-';
+  }
+}
+
+void gallery() {
+  char key ;
+  int i = 0 ;
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  while (1) {
+    i %= 6 ;
+    display.clearDisplay();
+    display.drawBitmap(0, 0, galleryTe, 128, 64, WHITE) ;
+    display.drawBitmap(14, 0, photos[i], 100, 64, WHITE) ;
+    display.setCursor(0, 43);
+    display.print("A");
+    display.setCursor(116, 43);
+    display.print("B");
+    display.display();
+    while (1) {
+      key = keypad.getKey();
+      if (key) {
+        if (key == 'A') {
+          i += 5 ;
+          break;
+        } else if (key == 'B') {
+          i++ ;
+          break;
+        } else if (key == '#') {
+          return ;
+        }
+      }
+    }
   }
 }
