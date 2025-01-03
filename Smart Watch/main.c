@@ -220,8 +220,8 @@ void chooseApp(char key, int i) {
   if (key == 'A') {
     if (i == 0) {
       distanceApp() ;
-      // } else {
-      //   // calculator() ;
+    } else {
+      calculator() ;
     }
   } else if (key == 'B') {
     if (i == 0) {
@@ -383,5 +383,114 @@ void TimingISR() {
       second = 0;
     }
     centisecond = 0;
+  }
+}
+
+void calculator() {
+  char key ;
+  int first = 0 ;
+  int second = 0 ;
+  int result = 0 ;
+  char op ;
+  display.clearDisplay();
+  display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
+  display.display();
+  display.setCursor(10, 10);
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  while (1) {
+    while (1) {
+      key = keypad.getKey();
+      if (key) {
+        if ((int) key - 48 < 10 && (int) key > 47) {
+          if (first == result) {
+            result = 0 ;
+            first = 0 ;
+          }
+          display.clearDisplay();
+          display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
+          display.setCursor(15, 0);
+          first = first * 10 + ((int) key - 48) ;
+          display.print(first);
+          display.display();
+        } else if (key == '#') {
+          return ;
+        } else if (key == 'D') {
+          continue ;
+        } else {
+          display.clearDisplay();
+          display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
+          display.setCursor(15, 0);
+          display.print(first);
+          display.setCursor(0, 25);
+          display.print(chooseOperator(key));
+          display.display();
+          op = key ;
+          break ;
+        }
+      }
+    }
+    while (1) {
+      key = keypad.getKey();
+      if (key) {
+        if ((int) key - 48 < 10 && (int) key > 47) {
+          display.clearDisplay();
+          display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
+          display.setCursor(15, 0);
+          display.print(first);
+          display.setCursor(0, 25);
+          display.print(chooseOperator(op));
+          second = second * 10 +  ((int) key - 48) ;
+          display.setCursor(15, 25);
+          display.print(second);
+          display.display();
+        } else if (key == 'D') {
+          result = calculate(first, second, op);
+          display.clearDisplay();
+          display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
+          display.setCursor(15, 0);
+          display.print(first);
+          display.setCursor(0, 25);
+          display.print(chooseOperator(op));
+          display.setCursor(15, 25);
+          display.print(second);
+          display.setCursor(0, 45);
+          display.print("=");
+          display.setCursor(15, 45);
+          display.print(result);
+          display.display();
+          break ;
+        } else if (key == '#') {
+          return ;
+        }
+      }
+    }
+    first = result ;
+    second = 0 ;
+  }
+}
+
+int calculate(int a, int b, char op) {
+  if (op == '*') {
+    return a * b ;
+  } else if (op == 'A') {
+    return a / b ;
+  } else if (op == 'B') {
+    return a + b ;
+  } else if (op == 'C') {
+    return a - b ;
+  }
+  return -1;
+}
+
+char chooseOperator(char op) {
+  if (op == '*') {
+    return '*';
+  } else if (op == 'A') {
+    return '÷';
+  } else if (op == 'B') {
+    return '+';
+  } else {
+    return '-';
   }
 }
