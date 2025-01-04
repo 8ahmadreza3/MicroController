@@ -62,8 +62,6 @@ void loop() {
   turnOn();
   login();
   home();
-  // isOn = true ;
-  // isLog = true ;
   goMenu();
 }
 
@@ -249,8 +247,8 @@ void chooseApp(char key, int i) {
   } else if (key == 'B') {
     if (i == 0) {
       temAndHum();
-      // } else {
-      //   // playGame();
+    } else {
+      playGame();
     }
   } else if (key == 'C') {
     if (i == 0) {
@@ -508,7 +506,7 @@ char chooseOperator(char op) {
   if (op == '*') {
     return '*';
   } else if (op == 'A') {
-    return '÷';
+    return '/';
   } else if (op == 'B') {
     return '+';
   } else {
@@ -544,6 +542,68 @@ void gallery() {
           return ;
         }
       }
+    }
+  }
+}
+
+void playGame() {
+  canCount = false;
+  int seconds[] = {2, 5, 9, 12, 17, 30, 48, 59};
+  int centies[] = {0, 0, 0, 3, 5, 8, 12, 34, 55};
+  int points = 0 ;
+  int i = 0 ;
+  tm.point(1);
+  tm.set(2);
+  second = 0 ;
+  centisecond = 0 ;
+  char key ;
+  while (1) {
+    i %= 9 ;
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.drawBitmap(0, 0, gameTe[0], 128, 64, WHITE);
+    display.setCursor(20, 5);
+    display.print(points);
+    display.setCursor(10, 30);
+    display.print(seconds[i]);
+    display.print(":");
+    display.print(centies[i]);
+    display.display();
+    tm.display(0, second / 10);
+    tm.display(1, second % 10);
+    tm.display(2, (centisecond / 10) % 10);
+    tm.display(3, centisecond % 10);
+    canCount = true ;
+    key = keypad.getKey();
+    if (key == '#') {
+      canCount = false ;
+      tm.set(-1);
+      return;
+    } else if (key == 'A') {
+      canCount = false ;
+      display.clearDisplay();
+      if (i < 3 && second != seconds[i]) {
+        display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
+        display.display();
+        delay(2000);
+        return ;
+      } else if (i > 2 && i < 6 && (second != seconds[i] || centisecond % 10 != centies[i]) ) {
+        display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
+        display.display();
+        delay(2000);
+        return ;
+      } else if (i > 5 && i < 9 && (second != seconds[i] || centisecond != centies[i]))  {
+        display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
+        display.display();
+        delay(2000);
+        return ;
+      }
+      points += (i + 1) * 5 ;
+      i++ ;
+      display.drawBitmap(0, 0, gameTe[1], 128, 64, WHITE);
+      display.display();
+      delay(1500);
     }
   }
 }
