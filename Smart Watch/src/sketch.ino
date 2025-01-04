@@ -12,6 +12,7 @@
 boolean isOn = false ;
 boolean isLog = false ;
 boolean isLock = false ;
+boolean onMenu = false ;
 
 unsigned int centisecond = 0;
 unsigned int second = 0;
@@ -60,7 +61,26 @@ void setup() {
 void loop() {
   turnOn();
   login();
+  home();
+  // isOn = true ;
+  // isLog = true ;
   goMenu();
+}
+
+void home() {
+  if (!isOn || !isLog || isLock || onMenu)
+    return ;
+  char key ;
+  display.clearDisplay();
+  display.drawBitmap(0, 0, logo, 128, 64, WHITE);
+  display.display();
+  while (1) {
+    key = keypad.getKey();
+    if (key) {
+      onMenu = true;
+      return ;
+    }
+  }
 }
 
 void turnOn() {
@@ -132,16 +152,15 @@ void login() {
   display.drawBitmap(0, 0, logo, 128, 64, WHITE);
   display.display();
   delay(500);
-
   char key ;
   while (1) {
     key = keypad.getKey();
     if (key)
       break;
   }
-
   display.clearDisplay();
   display.setTextColor(WHITE);
+  display.drawBitmap(0, 0, loginTe, 128, 64, WHITE);
   display.setCursor(20, 5);
   display.println("ENTER PASSWORD :");
   display.drawRoundRect(14, 20, 100, 18, 8, WHITE);
@@ -187,7 +206,7 @@ void checkPass() {
 }
 
 void goMenu() {
-  if (!isOn || !isLog || isLock)
+  if (!isOn || !isLog || isLock || !onMenu)
     return ;
   char key ;
   int i = 0;
@@ -201,10 +220,14 @@ void goMenu() {
     if (key == '0') {
       i = (++i) % 2 ;
     } else if (key == '#') {
-      i = (++i) % 2 ;
+      onMenu = false;
+      return ;
+    } else if (key == 'D' && i == 1) {
+      isLog = false ;
+      isLock = false ;
+      return ;
     } else
       chooseApp(key, i);
-
     showMenu(i);
     tm.set(-1);
   }
@@ -238,8 +261,6 @@ void chooseApp(char key, int i) {
   } else if (key == 'D') {
     if (i == 0) {
       cronometer();
-      //   } else {
-      //     lock();
     }
   }
 }
