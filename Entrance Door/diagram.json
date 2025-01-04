@@ -1,0 +1,368 @@
+{
+  "version": 1,
+  "author": "AhmadReza Hosseinpour",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": -57,
+      "left": -144.6,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": -600.8,
+      "left": 2.22,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": -300,
+      "left": -300,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz2",
+      "top": -300,
+      "left": 300,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz3",
+      "top": 175.2,
+      "left": -286.2,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz4",
+      "top": 175.2,
+      "left": 289.8,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": -434,
+      "left": -220.8,
+      "attrs": {
+        "hornColor": "#439849"
+      }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo2",
+      "top": -434,
+      "left": 134.4,
+      "attrs": {
+        "hornColor": "#439849"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": 171.5,
+      "left": -77,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd2004",
+      "id": "lcd1",
+      "top": -299.24,
+      "left": -128,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-gnd",
+      "id": "gnd1",
+      "top": -403.2,
+      "left": 66.6,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-vcc",
+      "id": "vcc1",
+      "top": -412.04,
+      "left": 0,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "pir1:GND",
+      "gnd1:GND",
+      "red",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pir1:VCC",
+      "vcc1:VCC",
+      "gold",
+      [
+        "v19.2",
+        "h-9.6",
+        "v105.6"
+      ]
+    ],
+    [
+      "uno:3",
+      "pir1:OUT",
+      "green",
+      [
+        "v-38.4",
+        "h176.8",
+        "v-249.6",
+        "h-211.06"
+      ]
+    ],
+    [
+      "gnd1:GND",
+      "servo2:GND",
+      "red",
+      [
+        "h28.8",
+        "v23.2"
+      ]
+    ],
+    [
+      "pir1:GND",
+      "servo1:GND",
+      "red",
+      [
+        "v0",
+        "h47.74",
+        "v-115.2",
+        "h-124.8",
+        "v0",
+        "h-240",
+        "v240"
+      ]
+    ],
+    [
+      "vcc1:VCC",
+      "servo1:V+",
+      "gold",
+      [
+        "v48",
+        "h-278.4",
+        "v-19.2"
+      ]
+    ],
+    [
+      "pir1:VCC",
+      "servo2:V+",
+      "gold",
+      [
+        "h-48",
+        "v-134.4",
+        "h124.8",
+        "v268.7"
+      ]
+    ],
+    [
+      "servo2:PWM",
+      "uno:5",
+      "green",
+      [
+        "h-19.2",
+        "v38.6",
+        "h124.8",
+        "v220.8",
+        "h-112"
+      ]
+    ],
+    [
+      "servo1:PWM",
+      "uno:6",
+      "green",
+      [
+        "h-28.8",
+        "v48.2",
+        "h480",
+        "v201.6",
+        "h-111.9"
+      ]
+    ],
+    [
+      "uno:11",
+      "bz1:2",
+      "green",
+      [
+        "v-19.2",
+        "h-329.6"
+      ]
+    ],
+    [
+      "bz3:2",
+      "bz4:2",
+      "green",
+      [
+        "v19.2",
+        "h599"
+      ]
+    ],
+    [
+      "bz2:2",
+      "bz4:2",
+      "green",
+      [
+        "v4.8",
+        "h37.4",
+        "v585.6"
+      ]
+    ],
+    [
+      "bz3:2",
+      "bz1:2",
+      "green",
+      [
+        "v19.2",
+        "h-44.2",
+        "v-480",
+        "h38.4"
+      ]
+    ],
+    [
+      "bz3:1",
+      "bz4:1",
+      "red",
+      [
+        "v38.4",
+        "h599.4"
+      ]
+    ],
+    [
+      "uno:GND.2",
+      "pot1:GND",
+      "red",
+      [
+        "v163.1",
+        "h-82.5"
+      ]
+    ],
+    [
+      "pot1:VCC",
+      "uno:5V",
+      "gold",
+      [
+        "v38.4",
+        "h56.8",
+        "v-143.9"
+      ]
+    ],
+    [
+      "pot1:SIG",
+      "uno:A0",
+      "green",
+      [
+        "v48",
+        "h114.8",
+        "v-201.5"
+      ]
+    ],
+    [
+      "lcd1:RS",
+      "uno:13",
+      "green",
+      [
+        "v48",
+        "h105.5"
+      ]
+    ],
+    [
+      "lcd1:E",
+      "uno:12",
+      "green",
+      [
+        "v38.4",
+        "h86.4"
+      ]
+    ],
+    [
+      "lcd1:D4",
+      "uno:10",
+      "green",
+      [
+        "v28.8",
+        "h57.6"
+      ]
+    ],
+    [
+      "lcd1:D5",
+      "uno:9",
+      "green",
+      [
+        "v19.2",
+        "h0.1"
+      ]
+    ],
+    [
+      "lcd1:D6",
+      "uno:8",
+      "green",
+      [
+        "v19.2",
+        "h9.8"
+      ]
+    ],
+    [
+      "lcd1:D7",
+      "uno:7",
+      "green",
+      [
+        "v19.2",
+        "h9.9"
+      ]
+    ],
+    [
+      "bz1:1",
+      "bz3:1",
+      "red",
+      [
+        "v4.8",
+        "h-34.2",
+        "v508.8",
+        "h48"
+      ]
+    ],
+    [
+      "pot1:GND",
+      "bz3:1",
+      "red",
+      [
+        "v57.6",
+        "h-211.2",
+        "v0"
+      ]
+    ],
+    [
+      "bz2:1",
+      "bz4:1",
+      "red",
+      [
+        "v52.8",
+        "h76.2",
+        "v249.6",
+        "h0",
+        "v201.6",
+        "h-86.4"
+      ]
+    ]
+  ],
+  "dependencies": {}
+}

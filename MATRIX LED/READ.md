@@ -6,4 +6,4 @@ By applying voltage to specific rows and columns, a letter is displayed that mov
 
 ![Wokwi](./Wokwi.gif)
 
-in wokwi website :  [click here](https://wokwi.com/projects/410380345872274433)
+in wokwi website :  [click here](https://wokwi.com/projects/419164191982245889)
