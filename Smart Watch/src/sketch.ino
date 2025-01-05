@@ -69,10 +69,10 @@ void home() {
   if (!isOn || !isLog || isLock || onMenu)
     return ;
   char key ;
-  display.clearDisplay();
+  display.clearDisplay(); // Show wallpaper
   display.drawBitmap(0, 0, logo, 128, 64, WHITE);
   display.display();
-  while (1) {
+  while (1) { // Go to the menu with any button
     key = keypad.getKey();
     if (key) {
       onMenu = true;
@@ -83,16 +83,16 @@ void home() {
 
 void turnOn() {
   if (isOn)
-    return ;
+    return ;// If it was off, continue.
 
-  for (int i = 0 ; i < 10 ; ++i) {
+  for (int i = 0 ; i < 10 ; ++i) { // Hold the button for about 3 seconds.
     if (!digitalRead(2))
       return ;
 
     delay(300);
   }
   palyAnimation();
-  isOn = true ;
+  isOn = true ; // Turn on
   delay(1000);
   showLogo();
 }
@@ -101,7 +101,7 @@ void showLogo() {
   display.clearDisplay();
   delay(50);
   display.drawBitmap(0, 0, logo, 128, 64, WHITE);
-  for (int i = 0 ; i < 10 ; i++) {
+  for (int i = 0 ; i < 10 ; i++) { // Dragging nested rectangles inward
     if (i % 2 == 0)
       display.drawRect(i, i, 128 - 2 * i, 64 - 2 * i, WHITE);
     else
@@ -111,7 +111,7 @@ void showLogo() {
     delay(100);
   }
   delay(500);
-  for (int i = 0 ; i < 5 ; i++) {
+  for (int i = 0 ; i < 5 ; i++) { // Clearing nested rectangles from the inside
     display.clearDisplay();
     display.drawBitmap(0, 0, logo, 128, 64, WHITE);
     for (int j = 0 ; j < 8 - 2 * i ; j++) {
@@ -130,12 +130,12 @@ void palyAnimation() {
     if (i % 8 == 1) {
       display.clearDisplay();
     }
-    int noteDuration = 1200 / noteDurations[i - 1];
+    int noteDuration = 1200 / noteDurations[i - 1]; // Music player
     tone(13, melody[i - 1], noteDuration);
     int pauseBetweenNotes = noteDuration * 1.5;
     delay(pauseBetweenNotes);
     noTone(13);
-    if (i % 8 == 0) {
+    if (i % 8 == 0) { // paly animation
       display.drawBitmap(0, 0, animation[i / 8], 128, 64, WHITE);
       display.display();
     }
@@ -151,12 +151,12 @@ void login() {
   display.display();
   delay(500);
   char key ;
-  while (1) {
+  while (1) { // Login by pressing any key
     key = keypad.getKey();
     if (key)
       break;
   }
-  display.clearDisplay();
+  display.clearDisplay(); // Show input
   display.setTextColor(WHITE);
   display.drawBitmap(0, 0, loginTe, 128, 64, WHITE);
   display.setCursor(20, 5);
@@ -170,7 +170,7 @@ void checkPass() {
   boolean samePass = true ;
   display.setCursor(18, 25);
   char key ;
-  for (int i = 0 ; i < 8 ; i++) {
+  for (int i = 0 ; i < 8 ; i++) { // Checking each character of the password
     while (1) {
       key = keypad.getKey();
       if (key)
@@ -190,7 +190,7 @@ void checkPass() {
 
   display.clearDisplay();
   display.setCursor(20, 20);
-  if (samePass) {
+  if (samePass) { // Display the appropriate message
     isLog = true ;
     display.println("Welcome Back !!");
   } else {
@@ -208,19 +208,19 @@ void goMenu() {
     return ;
   char key ;
   int i = 0;
-  showMenu(i);
+  showMenu(i); // Display the on-screen menu
   while (!isLock) {
     while (1) {
       key = keypad.getKey();
       if (key)
         break;
     }
-    if (key == '0') {
+    if (key == '0') { // Moving between pages
       i = (++i) % 2 ;
     } else if (key == '#') {
       onMenu = false;
       return ;
-    } else if (key == 'D' && i == 1) {
+    } else if (key == 'D' && i == 1) { // Lock the device
       isLog = false ;
       isLock = false ;
       return ;
@@ -238,7 +238,7 @@ void showMenu(int i) {
 }
 
 void chooseApp(char key, int i) {
-  if (key == 'A') {
+  if (key == 'A') { // Select one of the menu items.
     if (i == 0) {
       distanceApp() ;
     } else {
@@ -266,6 +266,7 @@ void chooseApp(char key, int i) {
 void distanceApp() {
   char key ;
   while (1) {
+    // By sending and receiving a pulse, we calculate the pulse return time with
     long duration, distance;
     display.clearDisplay();
     display.drawBitmap(0, 0, distanceTe, 128, 64, WHITE);
@@ -276,7 +277,7 @@ void distanceApp() {
     digitalWrite(trigPin, LOW);
     duration = pulseIn(echoPin, HIGH);
     delay(200);
-    distance = duration * 0.0343 / 2;
+    distance = duration * 0.0343 / 2; // Using the speed of sound, we get the distance.
     display.setTextSize(2);
     display.setCursor(20, 20);
     display.setTextColor(WHITE);
@@ -309,7 +310,7 @@ void showClock() {
   display.setCursor(90, 35);
   display.print("/");
   display.print(now.day());
-  display.display();
+  display.display(); // Show the date of the day
   tm.set(2);
   tm.point(1);
   while (1) {
@@ -317,7 +318,7 @@ void showClock() {
     tm.display(0, (now.hour() / 10) % 10);
     tm.display(1, now.hour() % 10);
     tm.display(2, (now.minute() / 10) % 10);
-    tm.display(3, now.minute() % 10);
+    tm.display(3, now.minute() % 10); // Display current hour and minute
     for (int i = 0 ; i < 600 ; i++) {
       key = keypad.getKey();
       if (key == '#') {
@@ -331,6 +332,7 @@ void showClock() {
 void temAndHum() {
   char key ;
   while (1) {
+    // Reading information
     float t = dht.readTemperature();
     float h = dht.readHumidity();
     display.clearDisplay();
@@ -342,7 +344,7 @@ void temAndHum() {
     display.setCursor(74, 32);
     display.print(h);
     display.display();
-    for (int i = 0 ; i < 200 ; i++) {
+    for (int i = 0 ; i < 200 ; i++) { // Wait for 2 seconds.
       key = keypad.getKey();
       if (key == '#')
         return;
@@ -360,12 +362,12 @@ void cronometer() {
   tm.point(1);
   tm.set(2);
   while (1) {
-    if (second >= 100) {
+    if (second >= 100) { // Display in minutes and seconds
       tm.display(0, (second / 600) % 10);
       tm.display(1, (second / 60) % 10);
       tm.display(2, (second / 10) % 6);
       tm.display(3, second % 10);
-    } else {
+    } else { // Display in seconds and centiseconds
       tm.display(0, second / 10);
       tm.display(1, second % 10);
       tm.display(2, (centisecond / 10) % 10);
@@ -378,15 +380,15 @@ void cronometer() {
       second = 0 ;
       tm.set(-1);
       return;
-    } else if (key == 'A') {
+    } else if (key == 'A') { // Start counting
       canCount = true ;
-    } else if (key == 'B') {
+    } else if (key == 'B') { // Reset Count
       canCount = false ;
       centisecond = 0 ;
       second = 0 ;
-    } else if (key == 'C') {
+    } else if (key == 'C') { // Stop counting
       canCount = false ;
-    } else if (key == 'D') {
+    } else if (key == 'D') { // Continue counting.
       canCount = true ;
     }
   }
@@ -395,9 +397,9 @@ void cronometer() {
 void TimingISR() {
   if (!canCount)
     return ;
-  centisecond ++;
+  centisecond ++; // One-hundredth of a second counter
   if (centisecond == 100) {
-    second ++;
+    second ++; // Seconds counter
     if (second == 5999) {
       second = 0;
     }
@@ -417,11 +419,13 @@ void calculator() {
   display.setCursor(10, 10);
   display.setTextSize(2);
   display.setTextColor(WHITE);
+  // The key works with ASCII code, so we subtract 48.
   while (1) {
     while (1) {
       key = keypad.getKey();
       if (key) {
         if ((int) key - 48 < 10 && (int) key > 47) {
+          // Getting the value of the first number
           if (first == result) {
             result = 0 ;
             first = 0 ;
@@ -444,7 +448,7 @@ void calculator() {
           display.setCursor(0, 25);
           display.print(chooseOperator(key));
           display.display();
-          op = key ;
+          op = key ; // Getting the operand
           break ;
         }
       }
@@ -459,12 +463,12 @@ void calculator() {
           display.print(first);
           display.setCursor(0, 25);
           display.print(chooseOperator(op));
-          second = second * 10 +  ((int) key - 48) ;
+          second = second * 10 +  ((int) key - 48) ; // Getting the second number
           display.setCursor(15, 25);
           display.print(second);
           display.display();
         } else if (key == 'D') {
-          result = calculate(first, second, op);
+          result = calculate(first, second, op); // Output calculation
           display.clearDisplay();
           display.drawBitmap(0, 0, calculatorTe, 128, 64, WHITE);
           display.setCursor(15, 0);
@@ -484,12 +488,12 @@ void calculator() {
         }
       }
     }
-    first = result ;
+    first = result ; // For further calculations
     second = 0 ;
   }
 }
 
-int calculate(int a, int b, char op) {
+int calculate(int a, int b, char op) { // Performing operations using the Enter key
   if (op == '*') {
     return a * b ;
   } else if (op == 'A') {
@@ -523,7 +527,7 @@ void gallery() {
     i %= 6 ;
     display.clearDisplay();
     display.drawBitmap(0, 0, galleryTe, 128, 64, WHITE) ;
-    display.drawBitmap(14, 0, photos[i], 100, 64, WHITE) ;
+    display.drawBitmap(14, 0, photos[i], 100, 64, WHITE) ; // Show selected image
     display.setCursor(0, 43);
     display.print("A");
     display.setCursor(116, 43);
@@ -535,10 +539,10 @@ void gallery() {
         if (key == 'A') {
           i += 5 ;
           break;
-        } else if (key == 'B') {
+        } else if (key == 'B') { // Go to the next photo
           i++ ;
           break;
-        } else if (key == '#') {
+        } else if (key == '#') { // Go to previous photo
           return ;
         }
       }
@@ -557,7 +561,7 @@ void playGame() {
   second = 0 ;
   centisecond = 0 ;
   char key ;
-  while (1) {
+  while (1) { // Display seconds and centiseconds accepted
     i %= 9 ;
     display.clearDisplay();
     display.setTextSize(2);
@@ -583,23 +587,23 @@ void playGame() {
     } else if (key == 'A') {
       canCount = false ;
       display.clearDisplay();
-      if (i < 3 && second != seconds[i]) {
+      if (i < 3 && second != seconds[i]) { // The first 3 steps with an accuracy of one second
         display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
         display.display();
         delay(2000);
         return ;
-      } else if (i > 2 && i < 6 && (second != seconds[i] || centisecond % 10 != centies[i]) ) {
+      } else if (i > 2 && i < 6 && (second != seconds[i] || centisecond % 10 != centies[i]) ) { // 3 second steps with an accuracy of one second and tenths of a second
         display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
         display.display();
         delay(2000);
         return ;
-      } else if (i > 5 && i < 9 && (second != seconds[i] || centisecond != centies[i]))  {
+      } else if (i > 5 && i < 9 && (second != seconds[i] || centisecond != centies[i]))  { // 3 Third stage with an accuracy of one and one hundredth of a second
         display.drawBitmap(0, 0, gameTe[2], 128, 64, WHITE);
         display.display();
         delay(2000);
         return ;
       }
-      points += (i + 1) * 5 ;
+      points += (i + 1) * 5 ; // Acceptance at the stage
       i++ ;
       display.drawBitmap(0, 0, gameTe[1], 128, 64, WHITE);
       display.display();
