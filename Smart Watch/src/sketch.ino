@@ -147,6 +147,8 @@ void login() {
   if (!isOn || isLog)
     return ;
   display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
   display.drawBitmap(0, 0, logo, 128, 64, WHITE);
   display.display();
   delay(500);
